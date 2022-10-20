@@ -1,17 +1,24 @@
-use std::time::Instant;
+use mainmenu::main_menu;
+use pong::pong;
 
-use macroquad::prelude::*;
+mod mainmenu;
+mod pong;
 
-#[macroquad::main("BasicShapes")]
+#[derive(PartialEq)]
+pub enum State {
+    MainMenu,
+    Pong,
+    Exit,
+}
+
+#[macroquad::main("rust_retro")]
 async fn main() {
-    loop {
-        clear_background(RED);
-        draw_line(40.0, 40.0, 100.0, 200.0, 15.0, BLUE);
-        draw_rectangle(screen_width() / 2.0 - 60.0, 100.0, 120.0, 60.0, GREEN);
-        draw_circle(screen_width() - 30.0, screen_height() - 30.0, 15.0, YELLOW);
-
-        draw_text("IT WORKS!", 20.0, 20.0, 30.0, DARKGRAY);
-
-        next_frame().await
+    let mut state = State::MainMenu;
+    while state != State::Exit {
+        state = match state {
+            State::MainMenu => main_menu().await,
+            State::Pong => pong().await,
+            State::Exit => State::Exit,
+        }
     }
 }
