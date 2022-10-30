@@ -18,9 +18,10 @@ impl Default for State {
     }
 }
 
+
 impl State {
-    fn to_view(&self) -> Box<dyn View>{
-        match *self{
+    fn to_view(&self) -> Box<dyn View> {
+        match *self {
             State::MainMenu => Box::new(MainMenuView::default()),
             State::Pong => todo!(),
             State::Exit => todo!(),
