@@ -20,26 +20,8 @@
                 }
             },
             "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'rust_retro'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=rust_retro",
-                    "--package=rust_retro"
-                ],
-                "filter": {
-                    "name": "rust_retro",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "sourceMap": { "\\rustc\\fe5b13d681f25ee6474be29d748c65adcd91f69e\\" : "C:\\Users\\tillw\\.rustup\\toolchains\\stable-x86_64-pc-windows-msvc\\lib\\rustlib\\src\\rust\\" },
         }
     ]
 }
