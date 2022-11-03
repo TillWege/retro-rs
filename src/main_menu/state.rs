@@ -1,6 +1,6 @@
 use crate::State;
 
-#[derive()]
+#[derive(PartialEq, Copy, Clone)]
 pub(super) enum MainMenuState {
     PongSelected,
     ExitSelected,

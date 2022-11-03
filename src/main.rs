@@ -18,7 +18,6 @@ impl Default for State {
     }
 }
 
-
 impl State {
     fn to_view(&self) -> Box<dyn View> {
         match *self {

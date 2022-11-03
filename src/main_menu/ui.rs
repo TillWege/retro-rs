@@ -1,6 +1,8 @@
 use crate::main_menu::consts::*;
 use macroquad::prelude::*;
 
+use super::state::MainMenuState;
+
 pub struct Button {
     x: f32,
     y: f32,
@@ -9,12 +11,24 @@ pub struct Button {
     font_size: u16,
     caption: String,
     color: Color,
+    selected_color: Color,
     font_color: Color,
+    pub selected: bool,
 }
 
 impl Button {
     pub fn draw(&self) {
-        draw_rectangle(self.x, self.y, self.width, self.height, self.color);
+        draw_rectangle(
+            self.x,
+            self.y,
+            self.width,
+            self.height,
+            if self.selected {
+                self.selected_color
+            } else {
+                self.color
+            },
+        );
 
         let text_size = measure_text(&self.caption, Some(Font::default()), self.font_size, 1.0);
 
@@ -28,7 +42,11 @@ impl Button {
     }
 }
 
-pub(super) fn init_buttons(width: f32, _height: f32) -> (Button, Button, Button) {
+pub(super) fn init_buttons(
+    width: f32,
+    _height: f32,
+    state: MainMenuState,
+) -> (Button, Button, Button) {
     let title_rect_width = width - (2.0 * MENU_MARGIN_HORZ);
 
     let title = Button {
@@ -39,9 +57,10 @@ pub(super) fn init_buttons(width: f32, _height: f32) -> (Button, Button, Button)
         font_size: 30,
         caption: TITLE_TEXT.to_string(),
         color: LIGHTGRAY,
+        selected_color: GRAY,
         font_color: DARKGRAY,
+        selected: false,
     };
-
 
     let button_width = width - (2.0 * BUTTON_MARGIN_HORZ);
 
@@ -53,9 +72,11 @@ pub(super) fn init_buttons(width: f32, _height: f32) -> (Button, Button, Button)
         font_size: 16,
         caption: PONG_BUTTON_TEXT.to_string(),
         color: LIGHTGRAY,
+        selected_color: GRAY,
         font_color: DARKGRAY,
+        selected: state == MainMenuState::PongSelected,
     };
-    
+
     let exit_button = Button {
         x: BUTTON_MARGIN_HORZ,
         y: EXIT_BUTTON_Y,
@@ -64,7 +85,9 @@ pub(super) fn init_buttons(width: f32, _height: f32) -> (Button, Button, Button)
         font_size: 16,
         caption: EXIT_BUTTON_TEXT.to_string(),
         color: LIGHTGRAY,
+        selected_color: GRAY,
         font_color: DARKGRAY,
+        selected: state == MainMenuState::ExitSelected,
     };
 
     return (title, pong_button, exit_button);
