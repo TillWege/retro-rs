@@ -5,6 +5,7 @@ use main_menu::MainMenuView;
 use screen::View;
 
 mod main_menu;
+mod pong;
 mod screen;
 
 #[derive(PartialEq)]
