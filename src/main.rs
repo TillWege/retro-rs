@@ -1,3 +1,5 @@
+use std::process::exit;
+
 use macroquad::window::{next_frame, screen_height, screen_width};
 use main_menu::MainMenuView;
 use screen::View;
@@ -23,7 +25,7 @@ impl State {
         match *self {
             State::MainMenu => Box::new(MainMenuView::default()),
             State::Pong => todo!(),
-            State::Exit => todo!(),
+            State::Exit => exit(0),
         }
     }
 }
