@@ -1,12 +1,12 @@
-use std::process::exit;
-
-use macroquad::window::{next_frame, screen_height, screen_width};
-use main_menu::MainMenuView;
-use screen::View;
-
 mod main_menu;
 mod pong;
 mod screen;
+
+use macroquad::window::{next_frame, screen_height, screen_width};
+use main_menu::MainMenuView;
+use pong::Pong;
+use screen::View;
+use std::process::exit;
 
 #[derive(PartialEq)]
 pub enum State {
@@ -25,7 +25,7 @@ impl State {
     fn to_view(&self) -> Box<dyn View> {
         match *self {
             State::MainMenu => Box::new(MainMenuView::default()),
-            State::Pong => todo!(),
+            State::Pong => Box::new(Pong::default()),
             State::Exit => exit(0),
         }
     }
@@ -53,6 +53,7 @@ async fn main() {
         if control_res.is_some() {
             state = control_res.unwrap();
             view = state.to_view();
+            view.on_resize(new_width, new_height);
         }
         view.draw();
         next_frame().await;
