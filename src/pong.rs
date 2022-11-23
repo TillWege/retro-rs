@@ -4,6 +4,8 @@ use macroquad::{prelude::*, window::clear_background};
 
 use crate::{screen::View, State};
 
+use self::player::Player;
+
 const ASPECT_RATIO: f32 = 2.0;
 const GAME_WIDTH: u16 = 512;
 const GAME_HEIGHT: u16 = 256;
@@ -12,19 +14,19 @@ const PADDLE_HEIGHT: f32 = 28.0;
 const BALL_DIAMETER: f32 = 5.0;
 
 pub struct Pong {
-    x_pos: u32,
-    y_pos: u32,
+    player_left: Player,
+    player_right: Player,
     scaling: Option<Vec2>,
 }
 
 impl View for Pong {
     fn draw(&self) {
         clear_background(BLACK);
+
         let mut img = Image::gen_image_color(GAME_WIDTH, GAME_HEIGHT, GRAY);
 
-        for i in 0..256 {
-            img.set_pixel(i, i, GREEN);
-        }
+        self.player_left.draw(&mut img);
+        self.player_right.draw(&mut img);
 
         draw_texture_ex(
             Texture2D::from_image(&img),
@@ -47,20 +49,20 @@ impl View for Pong {
             return Some(State::MainMenu);
         }
 
-        if is_key_pressed(KeyCode::Up) {
-            self.y_pos = self.y_pos.checked_add(1)?;
+        if is_key_down(KeyCode::Up) {
+            self.player_right.move_up();
         }
 
-        if is_key_pressed(KeyCode::Up) {
-            self.y_pos = self.y_pos.checked_add(1)?;
+        if is_key_down(KeyCode::Down) {
+            self.player_right.move_down();
         }
 
-        if is_key_pressed(KeyCode::Up) {
-            self.y_pos = self.y_pos.checked_add(1)?;
+        if is_key_down(KeyCode::W) {
+            self.player_left.move_up();
         }
 
-        if is_key_pressed(KeyCode::Up) {
-            self.y_pos = self.y_pos.checked_add(1)?;
+        if is_key_down(KeyCode::S) {
+            self.player_left.move_down();
         }
 
         return None;
@@ -90,8 +92,11 @@ impl View for Pong {
 impl Default for Pong {
     fn default() -> Self {
         Self {
-            x_pos: 0,
-            y_pos: 0,
+            player_left: Player::default(),
+            player_right: Player {
+                side: player::Side::RightSide,
+                ..Default::default()
+            },
             scaling: None,
         }
     }
