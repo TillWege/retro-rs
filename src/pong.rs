@@ -1,3 +1,5 @@
+mod player;
+
 use macroquad::{prelude::*, window::clear_background};
 
 use crate::{screen::View, State};
@@ -23,7 +25,7 @@ impl View for Pong {
         for i in 0..256 {
             img.set_pixel(i, i, GREEN);
         }
-        
+
         draw_texture_ex(
             Texture2D::from_image(&img),
             0.0,
