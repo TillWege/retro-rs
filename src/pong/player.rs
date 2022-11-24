@@ -1,4 +1,4 @@
-use macroquad::{texture::Image, prelude::WHITE};
+use macroquad::{prelude::WHITE, texture::Image};
 
 use super::{GAME_HEIGHT, GAME_WIDTH};
 
@@ -19,14 +19,6 @@ fn get_side_starting_x(side: &Side) -> u32 {
         Side::RightSide => GAME_WIDTH as u32 - PLAYER_WIDTH - PLAYER_MARGIN,
     }
 }
-
-// fn get_side_ending_x(side: &Side) -> u32 {
-//     match side {
-//         Side::left_side => PLAYER_MARGIN + PLAYER_WIDTH,
-//         Side::right_side => GAME_WIDTH as u32 - PLAYER_MARGIN,
-//     }
-// }
-
 pub(super) struct Player {
     pub y_pos: u32,
     pub side: Side,
@@ -43,10 +35,8 @@ impl Default for Player {
 
 impl Player {
     pub(super) fn move_down(&mut self) {
-        let res = self.y_pos.checked_add(1);
-        if res.is_some() {
-            self.y_pos = res.unwrap();
-        }
+        let res = self.y_pos + 1;
+        self.y_pos = std::cmp::min(res, MAX_Y_POS);
     }
 
     pub(super) fn move_up(&mut self) {

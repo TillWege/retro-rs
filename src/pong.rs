@@ -1,3 +1,4 @@
+mod ball;
 mod player;
 
 use macroquad::{prelude::*, window::clear_background};
@@ -9,14 +10,12 @@ use self::player::Player;
 const ASPECT_RATIO: f32 = 2.0;
 const GAME_WIDTH: u16 = 512;
 const GAME_HEIGHT: u16 = 256;
-const PADDLE_WIDTH: f32 = 2.0;
-const PADDLE_HEIGHT: f32 = 28.0;
-const BALL_DIAMETER: f32 = 5.0;
 
 pub struct Pong {
     player_left: Player,
     player_right: Player,
     scaling: Option<Vec2>,
+    use_integer_scaling: bool,
 }
 
 impl View for Pong {
@@ -98,6 +97,7 @@ impl Default for Pong {
                 ..Default::default()
             },
             scaling: None,
+            use_integer_scaling: false,
         }
     }
 }
