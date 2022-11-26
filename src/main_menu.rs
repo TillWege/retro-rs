@@ -38,7 +38,7 @@ impl View for MainMenuView {
         self.exit_button.draw();
     }
 
-    fn handle_input(&mut self) -> Option<State> {
+    fn update(&mut self) -> Option<State> {
         let mut result = None;
 
         if is_key_pressed(KeyCode::Escape) {

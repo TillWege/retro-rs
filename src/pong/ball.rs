@@ -1,6 +1,6 @@
 const BALL_DIAMETER: u32 = 5;
 
-struct Ball {
+pub(super) struct Ball {
     x_pos: u32,
     y_pos: u32,
     y_vel: u32,
@@ -9,6 +9,8 @@ struct Ball {
 
 impl Ball {
     fn update() {}
+
+    fn draw() {}
 }
 
 impl Default for Ball {

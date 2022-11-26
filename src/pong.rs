@@ -5,7 +5,7 @@ use macroquad::{prelude::*, window::clear_background};
 
 use crate::{screen::View, State};
 
-use self::player::Player;
+use self::{player::Player, ball::Ball};
 
 const ASPECT_RATIO: f32 = 2.0;
 const GAME_WIDTH: u16 = 512;
@@ -14,6 +14,7 @@ const GAME_HEIGHT: u16 = 256;
 pub struct Pong {
     player_left: Player,
     player_right: Player,
+    ball: Ball,
     scaling: Vec2,
     use_integer_scaling: bool,
 }
@@ -22,10 +23,33 @@ impl View for Pong {
     fn draw(&self) {
         clear_background(BLACK);
 
+        // ---------------
+        // prepare texture
+        // ---------------
+
         let mut img = Image::gen_image_color(GAME_WIDTH, GAME_HEIGHT, GRAY);
+
+        // ---------------------------
+        // draw vertical line
+        // ---------------------------
+
+        for i in 0..u32::from(GAME_HEIGHT) {
+            if i % 20 <= 10 {
+                img.set_pixel((u32::from(GAME_WIDTH) / 2) - 1, i, WHITE);
+                img.set_pixel(u32::from(GAME_WIDTH) / 2, i, WHITE);    
+            }
+        }
+
+        // ---------------------------
+        // draw gameobjects to texture
+        // ---------------------------
 
         self.player_left.draw(&mut img);
         self.player_right.draw(&mut img);
+
+        // ----------------------
+        // draw texture to screen
+        // ----------------------
 
         let border_height = screen_height() - self.scaling.y;
         let border_width = screen_width() - self.scaling.x;
@@ -46,7 +70,12 @@ impl View for Pong {
         );
     }
 
-    fn handle_input(&mut self) -> Option<crate::State> {
+    fn update(&mut self) -> Option<crate::State> {
+
+        // -------------
+        // handle inputs
+        // -------------
+
         if is_key_pressed(KeyCode::Escape) {
             return Some(State::MainMenu);
         }
@@ -74,6 +103,12 @@ impl View for Pong {
 
             self.on_resize(screen_width(), screen_height());
         }
+
+        // -------------
+        // run game loop
+        // -------------
+
+
 
         return None;
     }
@@ -127,6 +162,7 @@ impl Default for Pong {
                 side: player::Side::RightSide,
                 ..Default::default()
             },
+            ball: Ball::default(),
             scaling: calculate_texture_scaling(screen_width(), screen_height(), false),
             use_integer_scaling: false,
         }

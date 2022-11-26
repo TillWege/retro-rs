@@ -49,7 +49,7 @@ async fn main() {
             view.on_resize(width, height);
         }
 
-        let control_res = view.handle_input();
+        let control_res = view.update();
         if control_res.is_some() {
             state = control_res.unwrap();
             view = state.to_view();
