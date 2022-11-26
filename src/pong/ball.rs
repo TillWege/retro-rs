@@ -8,9 +8,7 @@ struct Ball {
 }
 
 impl Ball {
-    fn update() {
-        
-    }
+    fn update() {}
 }
 
 impl Default for Ball {

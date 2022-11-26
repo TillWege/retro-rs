@@ -53,7 +53,7 @@ async fn main() {
         if control_res.is_some() {
             state = control_res.unwrap();
             view = state.to_view();
-            view.on_resize(new_width, new_height);
+            //view.on_resize(new_width, new_height);
         }
         view.draw();
         next_frame().await;

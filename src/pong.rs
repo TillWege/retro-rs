@@ -14,7 +14,7 @@ const GAME_HEIGHT: u16 = 256;
 pub struct Pong {
     player_left: Player,
     player_right: Player,
-    scaling: Option<Vec2>,
+    scaling: Vec2,
     use_integer_scaling: bool,
 }
 
@@ -27,13 +27,16 @@ impl View for Pong {
         self.player_left.draw(&mut img);
         self.player_right.draw(&mut img);
 
+        let border_height = screen_height() - self.scaling.y;
+        let border_width = screen_width() - self.scaling.x;
+
         draw_texture_ex(
             Texture2D::from_image(&img),
-            0.0,
-            0.0,
+            border_width / 2.0,
+            border_height / 2.0,
             WHITE,
             DrawTextureParams {
-                dest_size: self.scaling,
+                dest_size: Some(self.scaling),
                 source: None,
                 rotation: 0.0,
                 flip_x: false,
@@ -68,23 +71,28 @@ impl View for Pong {
     }
 
     fn on_resize(&mut self, new_width: f32, new_height: f32) {
-        if new_width > (new_height * ASPECT_RATIO) {
-            /* Limited by Width */
+        self.scaling = calculate_texture_scaling(new_width, new_height);
 
-            self.scaling = Some(Vec2 {
-                x: new_height * ASPECT_RATIO,
-                y: new_height,
-            });
-        } else {
-            /* Limited by Height */
-
-            self.scaling = Some(Vec2 {
-                x: new_width,
-                y: new_width / ASPECT_RATIO,
-            });
-        }
         println!("resizing to x: {}, y: {}", new_width, new_height);
         println!("new Scaling set to: {:?}", self.scaling);
+    }
+}
+
+fn calculate_texture_scaling(new_width: f32, new_height: f32) -> Vec2 {
+    if new_width > (new_height * ASPECT_RATIO) {
+        /* Limited by Width */
+
+        return Vec2 {
+            x: new_height * ASPECT_RATIO,
+            y: new_height,
+        };
+    } else {
+        /* Limited by Height */
+
+        return Vec2 {
+            x: new_width,
+            y: new_width / ASPECT_RATIO,
+        };
     }
 }
 
@@ -96,7 +104,7 @@ impl Default for Pong {
                 side: player::Side::RightSide,
                 ..Default::default()
             },
-            scaling: None,
+            scaling: calculate_texture_scaling(screen_width(), screen_height()),
             use_integer_scaling: false,
         }
     }
