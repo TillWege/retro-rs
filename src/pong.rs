@@ -67,18 +67,45 @@ impl View for Pong {
             self.player_left.move_down();
         }
 
+        if is_key_pressed(KeyCode::P) {
+            self.use_integer_scaling = !self.use_integer_scaling;
+
+            println!(
+                "{} integer scaling",
+                if self.use_integer_scaling {
+                    "activating"
+                } else {
+                    "deactivating"
+                }
+            );
+
+            self.on_resize(screen_width(), screen_height());
+        }
+
         return None;
     }
 
     fn on_resize(&mut self, new_width: f32, new_height: f32) {
-        self.scaling = calculate_texture_scaling(new_width, new_height);
+        self.scaling = calculate_texture_scaling(new_width, new_height, self.use_integer_scaling);
 
-        println!("resizing to x: {}, y: {}", new_width, new_height);
+        println!("resizing to x: {}, y: {}, integer scaling: {}", new_width, new_height, self.use_integer_scaling);
         println!("new Scaling set to: {:?}", self.scaling);
     }
 }
 
-fn calculate_texture_scaling(new_width: f32, new_height: f32) -> Vec2 {
+fn calculate_texture_scaling(
+    mut new_width: f32,
+    mut new_height: f32,
+    use_integer_scaling: bool,
+) -> Vec2 {
+    if use_integer_scaling {
+        let rem_x = new_width % f32::from(GAME_WIDTH);
+        let rem_y = new_height % f32::from(GAME_HEIGHT);
+
+        new_width -= rem_x;
+        new_height -= rem_y;
+    }
+
     if new_width > (new_height * ASPECT_RATIO) {
         /* Limited by Width */
 
@@ -104,7 +131,7 @@ impl Default for Pong {
                 side: player::Side::RightSide,
                 ..Default::default()
             },
-            scaling: calculate_texture_scaling(screen_width(), screen_height()),
+            scaling: calculate_texture_scaling(screen_width(), screen_height(), false),
             use_integer_scaling: false,
         }
     }
