@@ -70,14 +70,7 @@ impl View for Pong {
         if is_key_pressed(KeyCode::P) {
             self.use_integer_scaling = !self.use_integer_scaling;
 
-            println!(
-                "{} integer scaling",
-                if self.use_integer_scaling {
-                    "activating"
-                } else {
-                    "deactivating"
-                }
-            );
+            println!("setting integer scaling: {}", self.use_integer_scaling);
 
             self.on_resize(screen_width(), screen_height());
         }
@@ -88,7 +81,10 @@ impl View for Pong {
     fn on_resize(&mut self, new_width: f32, new_height: f32) {
         self.scaling = calculate_texture_scaling(new_width, new_height, self.use_integer_scaling);
 
-        println!("resizing to x: {}, y: {}, integer scaling: {}", new_width, new_height, self.use_integer_scaling);
+        println!(
+            "resizing to x: {}, y: {}, integer scaling: {}",
+            new_width, new_height, self.use_integer_scaling
+        );
         println!("new Scaling set to: {:?}", self.scaling);
     }
 }
