@@ -1,3 +1,5 @@
+use macroquad::texture::Image;
+
 const BALL_DIAMETER: u32 = 5;
 
 pub(super) struct Ball {
@@ -8,9 +10,15 @@ pub(super) struct Ball {
 }
 
 impl Ball {
-    fn update() {}
+    fn update() {
 
-    fn draw() {}
+    }
+
+    pub fn draw(self: &Ball, img: &mut Image) {}
+
+    pub fn reset(self: &mut Ball) {
+
+    }
 }
 
 impl Default for Ball {

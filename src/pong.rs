@@ -46,6 +46,7 @@ impl View for Pong {
 
         self.player_left.draw(&mut img);
         self.player_right.draw(&mut img);
+        self.ball.draw(&mut img);
 
         // ----------------------
         // draw texture to screen

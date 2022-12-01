@@ -2,7 +2,7 @@ mod main_menu;
 mod pong;
 mod screen;
 
-use macroquad::window::{next_frame, screen_height, screen_width};
+use macroquad::{window::{next_frame, screen_height, screen_width}, prelude::is_quit_requested};
 use main_menu::MainMenuView;
 use pong::Pong;
 use screen::View;
@@ -53,7 +53,6 @@ async fn main() {
         if control_res.is_some() {
             state = control_res.unwrap();
             view = state.to_view();
-            //view.on_resize(new_width, new_height);
         }
         view.draw();
         next_frame().await;
