@@ -6,6 +6,7 @@ const PLAYER_MARGIN: u32 = 10;
 const PLAYER_HEIGHT: u32 = 80;
 const PLAYER_WIDTH: u32 = 20;
 const MAX_Y_POS: u32 = GAME_HEIGHT as u32 - PLAYER_HEIGHT;
+const STARTING_Y_POS: u32 = MAX_Y_POS / 2;
 
 #[derive(PartialEq)]
 pub enum Side {
@@ -27,7 +28,7 @@ pub(super) struct Player {
 impl Default for Player {
     fn default() -> Self {
         Self {
-            y_pos: 0,
+            y_pos: STARTING_Y_POS,
             side: Side::LeftSide,
         }
     }
