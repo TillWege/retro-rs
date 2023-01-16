@@ -30,7 +30,7 @@ impl State {
     }
 }
 
-#[macroquad::main("rust_retro")]
+#[macroquad::main("retro-rs")]
 async fn main() {
     let mut height = screen_height();
     let mut width = screen_width();
